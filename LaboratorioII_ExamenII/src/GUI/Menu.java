@@ -304,6 +304,7 @@ class UserInfo extends JPanel{
     }
     
     public void Reveal(boolean Reveal){
+        UserInfo.setText("");
         setVisible(Reveal);
         if (Reveal){
             try{
