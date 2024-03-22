@@ -78,9 +78,9 @@ class MainPanel extends JPanel{
             try {
                 String NeoUser = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario: ");
                 if (!NeoUser.isBlank()){
-                    if (PSN.AddUser(NeoUser)){
+                    if (PSN.AddUser(NeoUser.toString())){
                         JOptionPane.showMessageDialog(this, "¡Se ha agregado el usuario exitosamente!", "Agregar usuario", JOptionPane.INFORMATION_MESSAGE);
-                    } else JOptionPane.showMessageDialog(this, "¡Ha ocurrido un problema intentando agregar el usuario!", "Agregar usuario", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } catch (Exception Ex){}
         });
@@ -96,14 +96,14 @@ class MainPanel extends JPanel{
             try {
                 String NeoUser = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario: ");
                 if (!NeoUser.isBlank()){
-                    if (PSN.RemoveUser(NeoUser)){
+                    if (PSN.RemoveUser(NeoUser.toString())){
                         JOptionPane.showMessageDialog(this, "¡Se ha eliminado el usuario exitosamente!", "Agregar usuario", JOptionPane.INFORMATION_MESSAGE);
-                    } else JOptionPane.showMessageDialog(this, "¡Ha ocurrido un problema intentando eliminar el usuario!", "Agregar usuario", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } catch (Exception Ex){}
         });
         RemoveUser.setBounds(25, AddUser.getY() + AddUser.getHeight() + 10, 300,50);
-        RemoveUser.setText("Desactivar usuario");
+        RemoveUser.setText("Activar/desactivar usuario");
         RemoveUser.setFocusable(false);
         
         add(RemoveUser);

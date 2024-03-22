@@ -1,10 +1,14 @@
 package Logic;
 
+import java.io.File;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author josue
  */
 public class HashTable {
+    private boolean ReActivate = false;
     private Entry Nodo;
     
     public HashTable(){
@@ -13,6 +17,7 @@ public class HashTable {
     
     public boolean add(String Username){
         if (Username.isBlank()) return false;
+
         int Pos = 0;
         
         if (Nodo == null){
@@ -22,19 +27,29 @@ public class HashTable {
             if (Nodo.Username.equals(Username)) return false;
             
             Entry Node = this.Nodo;
+            if ((FoundOnFile(Username) && !PSNUser.StartUp)){
+                JOptionPane.showMessageDialog(null, "La cuenta que intenta registrar ya existe", "Crear usuario", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+            
             while (Node != null){
-                if (Nodo.Siguiente.Username.equals(Username)) return false;
-
-                Node = Node.Siguiente;
                 Pos++;
                 if (Node.Siguiente == null){
                     Node.Siguiente = new Entry(Username, Pos);
                     return true;
                 }
+                if (Nodo.Siguiente.Username.equals(Username)) return false;
+                Node = Node.Siguiente;
             }
         }
         
         return false;
+    }
+    
+    public boolean FoundOnFile(String Name){
+        File Accounts = new File("PSN Accounts\\" + Name + ".psn");
+        System.out.println(Accounts.getAbsolutePath() + "\n Existe: " + Accounts.exists());
+        return Accounts.exists();
     }
     
     public boolean Remove(String Username){
@@ -47,7 +62,7 @@ public class HashTable {
             }
             
             Entry Node = Nodo;
-            while (Node != null){
+            while (Node.Siguiente != null){
                 if (Node.Siguiente.Username.equals(Username)){
                     Node.Siguiente = Node.Siguiente.Siguiente;
                     return true;
@@ -58,6 +73,14 @@ public class HashTable {
             
         }
 
+        if (FoundOnFile(Username) && !PSNUser.StartUp){
+            if (JOptionPane.showConfirmDialog(null, "Esta cuenta ya se encuentra desactivada\n¿Desea reactivarla?", "Reactivar cuenta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ReActivate = true;
+                Search(Username);
+                return false;
+            }
+        }
+        
         return false;
     }
     
@@ -65,6 +88,16 @@ public class HashTable {
         if (Username.isBlank() || Nodo == null) return -1;
         
         if (Nodo.Username.equals(Username)) return Nodo.Pos;
+        
+        if (ReActivate){
+            PSNUser.StartUp = true;
+            add(Username);
+            PSNUser.ReActivateAcc(Username);
+            ReActivate = false;
+            PSNUser.StartUp = false;
+            JOptionPane.showMessageDialog(null, "¡Se ha reactivado la cuenta exitosamente!");
+            return -1;
+        }
         
         Entry Node = Nodo;
         while (Node != null){

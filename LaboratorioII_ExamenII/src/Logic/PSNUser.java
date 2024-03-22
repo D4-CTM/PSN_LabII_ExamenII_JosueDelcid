@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +20,7 @@ public class PSNUser {
     private int Trofeos;
     private int Puntos;
     
+    protected static boolean StartUp = true;
     public PSNUser() throws FileNotFoundException, IOException{
         //Se crea la carpeta de usuarios
         Archivos = new File("PSN Accounts");
@@ -25,16 +28,19 @@ public class PSNUser {
         //Se leen los nombres de los usuarios para recargarlos en el HashTable
         Users = new HashTable();
         ReloadHashTable();
+        StartUp = false;
     }
     
     private void ReloadHashTable() throws FileNotFoundException, IOException{
         String Username;
+        System.out.println("Usuarios: ");
         for (String FileName : Archivos.list()){
             Leer = new RandomAccessFile("PSN Accounts\\" + FileName, "rw");
             Leer.seek(0);
             Username = Leer.readUTF();
             if (Leer.readBoolean()){
                 Users.add(Username);
+                System.out.println(Username);
             }
         }
     }
@@ -48,6 +54,7 @@ public class PSNUser {
     */
     public boolean AddUser(String Username) throws FileNotFoundException, IOException{
         if (Users.add(Username)){
+            System.out.println("nmms");
             Leer = new RandomAccessFile("PSN Accounts\\" + Username + ".psn","rw");
             Leer.seek(0);
             Leer.writeUTF(Username);
@@ -58,6 +65,8 @@ public class PSNUser {
         return false;
     }
     
+    
+    
     public boolean RemoveUser(String Username) throws FileNotFoundException, IOException{
         if (Users.Remove(Username)){
             Leer = new RandomAccessFile("PSN Accounts\\" + Username + ".psn","rw");
@@ -67,6 +76,19 @@ public class PSNUser {
             return true;
         }
         return false;
+    }
+    
+    public static void ReActivateAcc(String Username){
+        try {
+            RandomAccessFile Leer = new RandomAccessFile("PSN Accounts\\" + Username + ".psn","rw");
+            Leer.seek(0);
+            Leer.readUTF();
+            Leer.writeBoolean(true);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PSNUser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PSNUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /*
