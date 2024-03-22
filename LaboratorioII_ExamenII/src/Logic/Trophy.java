@@ -11,9 +11,4 @@ public enum Trophy {
         this.Type = Type;
     }
     
-    @Override
-    public String toString(){
-        return "Trofeo de " + Type + "\t Pts. " + Points;
-    }
-    
 }

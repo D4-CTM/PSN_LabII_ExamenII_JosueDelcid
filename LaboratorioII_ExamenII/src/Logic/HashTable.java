@@ -24,7 +24,10 @@ public class HashTable {
             Nodo = new Entry(Username, Pos);
             return true;
         } else {
-            if (Nodo.Username.equals(Username)) return false;
+            if (Nodo.Username.equals(Username)){
+                JOptionPane.showMessageDialog(null, "Este nombre de usuario ya esta tomado, por favor ingrese otro", "Nombre de usuario seleccionado", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
             
             Entry Node = this.Nodo;
             if ((FoundOnFile(Username) && !PSNUser.StartUp)){
@@ -38,7 +41,10 @@ public class HashTable {
                     Node.Siguiente = new Entry(Username, Pos);
                     return true;
                 }
-                if (Nodo.Siguiente.Username.equals(Username)) return false;
+                if (Nodo.Siguiente.Username.equals(Username)){
+                    JOptionPane.showMessageDialog(null, "¡Este nombre de usuario ya esta tomado!", "Nombre de usuario tomado", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
                 Node = Node.Siguiente;
             }
         }
@@ -48,7 +54,6 @@ public class HashTable {
     
     public boolean FoundOnFile(String Name){
         File Accounts = new File("PSN Accounts\\" + Name + ".psn");
-        System.out.println(Accounts.getAbsolutePath() + "\n Existe: " + Accounts.exists());
         return Accounts.exists();
     }
     
@@ -81,6 +86,7 @@ public class HashTable {
             }
         }
         
+        JOptionPane.showMessageDialog(null, "¡No se ha encontrado a este usuario!", "Usuario inexistente", JOptionPane.INFORMATION_MESSAGE);
         return false;
     }
     

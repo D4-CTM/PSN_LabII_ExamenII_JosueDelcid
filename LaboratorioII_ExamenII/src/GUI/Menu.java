@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 
 /**
  *
@@ -30,6 +29,10 @@ public class Menu extends JFrame{
         UsIn = new UserInfo(PSN);
         UsIn.Reveal(false);
         add(UsIn);
+        
+        setResizable(false);
+        setTitle("PSN Trophy");
+        setIconImage(new ImageIcon(new File("Icons\\PSLogo.png").getAbsolutePath()).getImage());
     }
     
     public static ImageIcon getPSLogo(int Width, int Height){
@@ -45,7 +48,7 @@ public class Menu extends JFrame{
         PSIcon.setBounds(25, 5, 40, 40);
         Panel.add(PSIcon);
         
-        JLabel PSHeader = new JLabel("Play station trophy");
+        JLabel PSHeader = new JLabel("PSN Trophy");
         
         PSHeader.setBounds(PSIcon.getX() + PSIcon.getWidth(), 5, 245, 40);
         PSHeader.setFont(new Font("Zrnic", 1, 20));
@@ -84,7 +87,7 @@ class MainPanel extends JPanel{
                 }
             } catch (Exception Ex){}
         });
-        AddUser.setBounds(25, 50, 300,50);
+        AddUser.setBounds(10, 50, 315,50);
         AddUser.setText("Agregar usuario");
         AddUser.setFocusable(false);
         
@@ -97,13 +100,13 @@ class MainPanel extends JPanel{
                 String NeoUser = JOptionPane.showInputDialog(this, "Ingrese el nombre de usuario: ");
                 if (!NeoUser.isBlank()){
                     if (PSN.RemoveUser(NeoUser.toString())){
-                        JOptionPane.showMessageDialog(this, "¡Se ha eliminado el usuario exitosamente!", "Agregar usuario", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "¡Se ha desactivado la cuenta del usuario exitosamente!", "Agregar usuario", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             } catch (Exception Ex){}
         });
-        RemoveUser.setBounds(25, AddUser.getY() + AddUser.getHeight() + 10, 300,50);
-        RemoveUser.setText("Activar/desactivar usuario");
+        RemoveUser.setBounds(10, AddUser.getY() + AddUser.getHeight() + 10, 315,50);
+        RemoveUser.setText("Desactivar/activar usuario");
         RemoveUser.setFocusable(false);
         
         add(RemoveUser);
@@ -115,7 +118,7 @@ class MainPanel extends JPanel{
             Menu.UsIn.Reveal(false);
             Menu.MP.setVisible(false);
         });
-        AddTrophyBTN.setBounds(25, RemoveUser.getY() + RemoveUser.getHeight() + 10, 300,50);
+        AddTrophyBTN.setBounds(10, RemoveUser.getY() + RemoveUser.getHeight() + 10, 315,50);
         AddTrophyBTN.setText("Agregar trofeo a usuario");
         AddTrophyBTN.setFocusable(false);
         
@@ -128,7 +131,7 @@ class MainPanel extends JPanel{
             Menu.UsIn.Reveal(true);
             Menu.MP.setVisible(false);
         });
-        UserInfo.setBounds(25, AddTrophyBTN.getY() + AddTrophyBTN.getHeight() + 10, 300,50);
+        UserInfo.setBounds(10, AddTrophyBTN.getY() + AddTrophyBTN.getHeight() + 10, 315,50);
         UserInfo.setText("Revisar informacion de usuario");
         UserInfo.setFocusable(false);
         
@@ -285,7 +288,7 @@ class UserInfo extends JPanel{
         Desc = new JTextArea();
         
         Desc.setEditable(false);
-        Desc.setBounds(10, 50, getWidth() - 35, getHeight() - 105);
+        Desc.setBounds(10, 50, getWidth() - 35, getHeight() - 155);
         JScrollPane Skroll = new JScrollPane(Desc);
         Skroll.setBounds(Desc.getBounds());
         add(Skroll);
@@ -293,6 +296,10 @@ class UserInfo extends JPanel{
         UserInfo = new JLabel();
 
         UserInfo.setBounds(Desc.getX(), Desc.getY() + Desc.getHeight(), Desc.getWidth(), 40);
+        UserInfo.setFont(new Font("Zrnic", 1, 15));
+        UserInfo.setHorizontalAlignment(JLabel.CENTER);
+        UserInfo.setVerticalAlignment(JLabel.CENTER);
+        UserInfo.setForeground(Color.WHITE);
         add(UserInfo);
     }
     
@@ -306,7 +313,7 @@ class UserInfo extends JPanel{
                     Desc.setText(Info);
                     if (!Info.isEmpty()) {
                         UserInfo.setText(Username + " cuenta con " + PSN.getTrophyCant() + " trofeo(s) - Pts: " + PSN.getUserPoints());
-                    } else JOptionPane.showMessageDialog(this, "El usuario que busca no cuenta con trofeos!");
+                    }
                 }
             } catch (Exception Ex){}
         }

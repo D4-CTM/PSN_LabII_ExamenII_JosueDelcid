@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -132,11 +133,11 @@ public class PSNUser {
                     
                     Leer.seek(Pos);
                     
-                    Data += Leer.readInt() + "\nJuego en el que se consiguio: " + Leer.readUTF() + " \nNombre del trofeo: " + Leer.readUTF()  + "\n";
+                    Data += Leer.readInt() + "\nJuego en el que se consiguio: " + Leer.readUTF() + " \nNombre del trofeo: " + Leer.readUTF()  + "\n\n";
                 }
                 return Data;
             }
-        }
+        } else JOptionPane.showMessageDialog(null, "No se ha encontrado el usuario que busca", "Trofeos de usuarios", JOptionPane.INFORMATION_MESSAGE);
         return "";
     }
     
